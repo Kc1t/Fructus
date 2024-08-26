@@ -1,0 +1,11 @@
+Compra: Laranja: 1.00 kg = R$ 14.55 Total: R$ 14.55
+Compra: Banana: 1.00 kg = R$ 5.60 Total: R$ 5.60
+Compra: Laranja: 1.00 kg = R$ 14.55 Total: R$ 14.55
+Compra: Laranja: 2.00 kg = R$ 29.10 Total: R$ 29.10
+Compra: Laranja: 11.00 kg = R$ 160.05 Total: R$ 160.05
+Compra: Laranja: 1.00 kg = R$ 14.55 Total: R$ 14.55
+Compra: Cebola: 2.00 kg = R$ 7.60 Total: R$ 7.60
+Compra: Laranja: 4.00 kg = R$ 58.20 Total: R$ 58.20
+Compra: Alface: 4.00 kg = R$ 11.20 Total: R$ 11.20
+Compra: Pepino: 3.00 kg = R$ 15.00 Total: R$ 15.00
+Compra: Coco: 1.00 kg = R$ 8.00 Total: R$ 8.00

@@ -9,3 +9,4 @@ Compra: Laranja: 4.00 kg = R$ 58.20 Total: R$ 58.20
 Compra: Alface: 4.00 kg = R$ 11.20 Total: R$ 11.20
 Compra: Pepino: 3.00 kg = R$ 15.00 Total: R$ 15.00
 Compra: Coco: 1.00 kg = R$ 8.00 Total: R$ 8.00
+Compra: Banana: 5.00 kg = R$ 28.00 Banana: 5.00 kg = R$ 28.00 Banana: 8.00 kg = R$ 44.80 Total: R$ 100.80

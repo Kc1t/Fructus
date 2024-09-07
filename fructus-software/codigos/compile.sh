@@ -24,31 +24,31 @@ gcc Hortifruti/Caixas/cashier-menu.c -lncurses -o ./builds/Hortifruti/Caixas/cas
 echo "Compilado cashier-menu.c"
 
 # Pages
-gcc Hortifruti/Admin/estoque.c -lncurses -o ./builds/Hortifruti/Admin/estoque
+gcc Hortifruti/Admin/estoque.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/estoque
 echo "Compilado estoque.c"
 
 gcc Hortifruti/Admin/integrantes.c -lncurses -o ./builds/Hortifruti/Admin/integrantes
 echo "Compilado integrantes.c"
 
 # Caixas
-gcc Hortifruti/Caixas/caixa.c -lncurses -o ./builds/Hortifruti/Caixas/caixa
+gcc Hortifruti/Caixas/caixa.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Caixas/caixa
 echo "Compilado caixa.c"
 
-gcc Hortifruti/Caixas/caixa-2.c -lncurses -o ./builds/Hortifruti/Caixas/caixa-2
+gcc Hortifruti/Caixas/caixa-2.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Caixas/caixa-2
 echo "Compilado caixa-2.c"
 
-gcc Hortifruti/Caixas/caixa-3.c -lncurses -o ./builds/Hortifruti/Caixas/caixa-3
+gcc Hortifruti/Caixas/caixa-3.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Caixas/caixa-3
 echo "Compilado caixa-3.c"
 
 # Vendas
 gcc Hortifruti/Admin/Vendas/vendas-menu.c -lncurses -o ./builds/Hortifruti/Admin/Vendas/vendas-menu
 echo "Compilado vendas-menu.c"
 
-gcc Hortifruti/Admin/Vendas/historico-caixa.c -lncurses -o ./builds/Hortifruti/Admin/Vendas/historico-caixa
+gcc Hortifruti/Admin/Vendas/historico-caixa.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/Vendas/historico-caixa
 echo "Compilado historico-caixa.c"
 
-gcc Hortifruti/Admin/Vendas/historico-caixa-2.c -lncurses -o ./builds/Hortifruti/Admin/Vendas/historico-caixa-2
+gcc Hortifruti/Admin/Vendas/historico-caixa-2.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/Vendas/historico-caixa-2
 echo "Compilado historico-caixa-2.c"
 
-gcc Hortifruti/Admin/Vendas/historico-caixa-3.c -lncurses -o ./builds/Hortifruti/Admin/Vendas/historico-caixa-3
+gcc Hortifruti/Admin/Vendas/historico-caixa-3.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/Vendas/historico-caixa-3
 echo "Compilado historico-caixa-3.c"

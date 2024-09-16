@@ -24,8 +24,8 @@ gcc Hortifruti/Caixas/cashier-menu.c -lncurses -o ./builds/Hortifruti/Caixas/cas
 echo "Compilado cashier-menu.c"
 
 # Pages
-gcc Hortifruti/Admin/estoque.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/estoque
-echo "Compilado estoque.c"
+gcc Hortifruti/Admin/produtos.c -lncurses -lsqlite3 -o ./builds/Hortifruti/Admin/produtos
+echo "Compilado produtos.c"
 
 gcc Hortifruti/Admin/integrantes.c -lncurses -o ./builds/Hortifruti/Admin/integrantes
 echo "Compilado integrantes.c"

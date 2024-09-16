@@ -20,7 +20,7 @@ typedef struct
     char nome[20];
     float peso;
     float preco_total;
-    char tipo_compra[10]; 
+    char tipo_compra[10];
 } ItemCompra;
 
 void criar_tabela_vendas(sqlite3 *db)
@@ -31,7 +31,7 @@ void criar_tabela_vendas(sqlite3 *db)
                       "nome_produto TEXT NOT NULL, "
                       "peso REAL NOT NULL, "
                       "preco_total REAL NOT NULL, "
-                      "tipo_compra TEXT NOT NULL);"; 
+                      "tipo_compra TEXT NOT NULL);";
 
     if (sqlite3_exec(db, sql, 0, 0, &err_msg) != SQLITE_OK)
     {
@@ -164,7 +164,7 @@ int carregar_produtos(sqlite3 *db, Produto produtos[])
 {
     int num_produtos = 0;
     sqlite3_stmt *stmt;
-    const char *sql = "SELECT nome, preco_kg, preco_granel FROM estoque";
+    const char *sql = "SELECT nome, preco_kg, preco_granel FROM produtos";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
     {
@@ -244,7 +244,7 @@ int main()
             }
             break;
         case '\n':
-            if (selecionado == num_produtos) 
+            if (selecionado == num_produtos)
             {
                 voltar();
             }

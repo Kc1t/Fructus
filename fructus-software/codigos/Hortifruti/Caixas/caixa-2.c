@@ -164,7 +164,7 @@ int carregar_produtos(sqlite3 *db, Produto produtos[])
 {
     int num_produtos = 0;
     sqlite3_stmt *stmt;
-    const char *sql = "SELECT nome, preco_kg, preco_granel FROM estoque";
+    const char *sql = "SELECT nome, preco_kg, preco_granel FROM produtos";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK)
     {

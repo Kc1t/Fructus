@@ -3,7 +3,7 @@
 #include <string.h>
 #include <sqlite3.h>
 
-void adicionarEstoque()
+void adicionarProdutos()
 {
     sqlite3 *db;
     char *err_msg = 0;
@@ -16,15 +16,13 @@ void adicionarEstoque()
         exit(EXIT_FAILURE);
     }
 
-    // Cria a tabela se ela não existir
     const char *sql_create_table =
-        "CREATE TABLE IF NOT EXISTS estoque("
+        "CREATE TABLE IF NOT EXISTS produtos("
         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
         "nome TEXT, "
-        "quantia INTEGER, "
-        "peso REAL, "
         "preco_kg REAL, "
-        "preco_granel REAL);";
+        "preco_granel REAL, "
+        "quantidade_estoque INTEGER);";
 
     rc = sqlite3_exec(db, sql_create_table, 0, 0, &err_msg);
 
@@ -37,59 +35,57 @@ void adicionarEstoque()
     }
 
     char nome[100];
-    int quantia;
-    float peso, preco_kg, preco_granel;
+    float preco_kg, preco_granel;
+    int quantidade_estoque;
 
     clear();
 
     int largura_formulario = 50;
-    int linha_inicio = (LINES - 8) / 2;
+    int linha_inicio = (LINES - 10) / 2;
     int coluna_inicio = (COLS - largura_formulario) / 2;
 
-    mvprintw(linha_inicio, coluna_inicio, "Digite o nome do item: ");
+    mvprintw(linha_inicio, coluna_inicio, "Digite o nome do produto: ");
+    move(linha_inicio, coluna_inicio + 26); // Move cursor para a direita do prompt
     echo();
-    mvgetnstr(linha_inicio, coluna_inicio + 22, nome, sizeof(nome) - 1);
+    getnstr(nome, sizeof(nome) - 1);
     noecho();
     nome[strcspn(nome, "\n")] = '\0';
 
-    mvprintw(linha_inicio + 2, coluna_inicio, "Digite a quantia: ");
-    echo();
-    scanw("%d", &quantia);
-    noecho();
-
-    mvprintw(linha_inicio + 4, coluna_inicio, "Digite o peso (em kg): ");
-    echo();
-    scanw("%f", &peso);
-    noecho();
-
-    mvprintw(linha_inicio + 6, coluna_inicio, "Digite o preço por kg: ");
+    mvprintw(linha_inicio + 2, coluna_inicio, "Digite o preço por kg: ");
+    move(linha_inicio + 2, coluna_inicio + 24); // Move cursor para a direita do prompt
     echo();
     scanw("%f", &preco_kg);
     noecho();
 
-    mvprintw(linha_inicio + 8, coluna_inicio, "Digite o preço a granel: ");
+    mvprintw(linha_inicio + 4, coluna_inicio, "Digite o preço a granel: ");
+    move(linha_inicio + 4, coluna_inicio + 26); // Move cursor para a direita do prompt
     echo();
     scanw("%f", &preco_granel);
     noecho();
 
+    mvprintw(linha_inicio + 6, coluna_inicio, "Digite a quantidade em estoque: ");
+    move(linha_inicio + 6, coluna_inicio + 33); // Move cursor para a direita do prompt
+    echo();
+    scanw("%d", &quantidade_estoque);
+    noecho();
+
     clear();
 
-    // Insere o novo item no banco de dados
     char sql_insert[512];
     snprintf(sql_insert, sizeof(sql_insert),
-             "INSERT INTO estoque(nome, quantia, peso, preco_kg, preco_granel) VALUES('%s', %d, %.2f, %.2f, %.2f);",
-             nome, quantia, peso, preco_kg, preco_granel);
+             "INSERT INTO produtos(nome, preco_kg, preco_granel, quantidade_estoque) VALUES('%s', %.2f, %.2f, %d);",
+             nome, preco_kg, preco_granel, quantidade_estoque);
 
     rc = sqlite3_exec(db, sql_insert, 0, 0, &err_msg);
 
     if (rc != SQLITE_OK)
     {
-        mvprintw(linha_inicio, (COLS - strlen("Erro ao adicionar item ao estoque")) / 2, "Erro ao adicionar item ao estoque: %s", err_msg);
+        mvprintw(linha_inicio, (COLS - strlen("Erro ao adicionar produto")) / 2, "Erro ao adicionar produto: %s", err_msg);
         sqlite3_free(err_msg);
     }
     else
     {
-        mvprintw(linha_inicio, (COLS - strlen("Item adicionado com sucesso!")) / 2, "Item adicionado com sucesso!");
+        mvprintw(linha_inicio, (COLS - strlen("Produto adicionado com sucesso!")) / 2, "Produto adicionado com sucesso!");
     }
 
     sqlite3_close(db);
@@ -98,7 +94,7 @@ void adicionarEstoque()
     getch();
 }
 
-void visualizarEstoque()
+void visualizarProdutos()
 {
     sqlite3 *db;
     char *err_msg = 0;
@@ -111,7 +107,7 @@ void visualizarEstoque()
         exit(EXIT_FAILURE);
     }
 
-    const char *sql_select = "SELECT id, nome, quantia, peso, preco_kg, preco_granel FROM estoque;";
+    const char *sql_select = "SELECT id, nome, preco_kg, preco_granel, quantidade_estoque FROM produtos;";
     sqlite3_stmt *stmt;
 
     rc = sqlite3_prepare_v2(db, sql_select, -1, &stmt, 0);
@@ -129,77 +125,74 @@ void visualizarEstoque()
     int coluna_inicio = (COLS - largura_tabela) / 2;
     int linha_inicio = (LINES - 12) / 2;
 
-    mvprintw(linha_inicio, coluna_inicio, "Aperte 'Enter' para apagar um item!");
+    mvprintw(linha_inicio, coluna_inicio, "Aperte 'Enter' para apagar um produto!");
 
-    mvprintw(linha_inicio + 1, coluna_inicio, "Estoque:");
-    mvprintw(linha_inicio + 2, coluna_inicio, "Nome                         Quantia  Peso (kg)  Preço/kg  Preço Granel");
-    mvprintw(linha_inicio + 3, coluna_inicio, "-------------------------------------------------------------------");
+    mvprintw(linha_inicio + 1, coluna_inicio, "Produtos:");
+    mvprintw(linha_inicio + 2, coluna_inicio, "Nome                         Preço/kg  Preço Granel  Quantidade");
+    mvprintw(linha_inicio + 3, coluna_inicio, "-------------------------------------------------------------");
 
     int linha_atual = linha_inicio + 3;
     int selecionado = 0;
-    int num_itens = 0;
+    int num_produtos = 0;
 
     struct
     {
         int id;
         char nome[100];
-        int quantia;
-        float peso;
         float preco_kg;
         float preco_granel;
-    } itens[100];
+        int quantidade_estoque;
+    } produtos[100];
 
     while (sqlite3_step(stmt) == SQLITE_ROW)
     {
-        itens[num_itens].id = sqlite3_column_int(stmt, 0);
-        strncpy(itens[num_itens].nome, (const char *)sqlite3_column_text(stmt, 1), sizeof(itens[num_itens].nome) - 1);
-        itens[num_itens].quantia = sqlite3_column_int(stmt, 2);
-        itens[num_itens].peso = (float)sqlite3_column_double(stmt, 3);
-        itens[num_itens].preco_kg = (float)sqlite3_column_double(stmt, 4);
-        itens[num_itens].preco_granel = (float)sqlite3_column_double(stmt, 5);
+        produtos[num_produtos].id = sqlite3_column_int(stmt, 0);
+        strncpy(produtos[num_produtos].nome, (const char *)sqlite3_column_text(stmt, 1), sizeof(produtos[num_produtos].nome) - 1);
+        produtos[num_produtos].preco_kg = (float)sqlite3_column_double(stmt, 2);
+        produtos[num_produtos].preco_granel = (float)sqlite3_column_double(stmt, 3);
+        produtos[num_produtos].quantidade_estoque = sqlite3_column_int(stmt, 4);
 
-        num_itens++;
+        num_produtos++;
     }
 
     sqlite3_finalize(stmt);
 
-    if (num_itens == 0)
+    if (num_produtos == 0)
     {
-        mvprintw(linha_atual, coluna_inicio, "Nenhum item no estoque.");
+        mvprintw(linha_atual, coluna_inicio, "Nenhum produto no estoque.");
         mvprintw(linha_atual + 2, (COLS - strlen("Pressione qualquer tecla para continuar...")) / 2, "Pressione qualquer tecla para continuar...");
         getch();
         sqlite3_close(db);
         return;
     }
 
-    // Adiciona a opção de voltar ao final da lista
     char *opcao_voltar = "Voltar";
-    int opcao_voltar_idx = num_itens;
+    int opcao_voltar_idx = num_produtos;
 
     int ch;
     while (1)
     {
-        for (int i = 0; i < num_itens; i++)
+        for (int i = 0; i < num_produtos; i++)
         {
             if (i == selecionado)
             {
-                attron(A_REVERSE); // Inverte as cores do item selecionado
+                attron(A_REVERSE);
             }
 
-            mvprintw(linha_atual + i, coluna_inicio, "%-30s %7d %10.2f %8.2f %12.2f", itens[i].nome, itens[i].quantia, itens[i].peso, itens[i].preco_kg, itens[i].preco_granel);
+            mvprintw(linha_atual + i, coluna_inicio, "%-30s %10.2f %12.2f %12d",
+                     produtos[i].nome, produtos[i].preco_kg, produtos[i].preco_granel, produtos[i].quantidade_estoque);
 
             if (i == selecionado)
             {
-                attroff(A_REVERSE); // Reverte as cores para normal
+                attroff(A_REVERSE);
             }
         }
 
-        // Exibe a opção de voltar
         if (selecionado == opcao_voltar_idx)
         {
             attron(A_REVERSE);
         }
-        mvprintw(linha_atual + num_itens, coluna_inicio, "%s", opcao_voltar);
+        mvprintw(linha_atual + num_produtos, coluna_inicio, "%s", opcao_voltar);
         if (selecionado == opcao_voltar_idx)
         {
             attroff(A_REVERSE);
@@ -211,44 +204,42 @@ void visualizarEstoque()
         switch (ch)
         {
         case KEY_UP:
-            selecionado = (selecionado - 1 + (num_itens + 1)) % (num_itens + 1);
+            selecionado = (selecionado - 1 + (num_produtos + 1)) % (num_produtos + 1);
             break;
         case KEY_DOWN:
-            selecionado = (selecionado + 1) % (num_itens + 1);
+            selecionado = (selecionado + 1) % (num_produtos + 1);
             break;
-        case 10: // Enter
+        case 10:
             if (selecionado == opcao_voltar_idx)
             {
                 sqlite3_close(db);
-                return; // Volta para o menu principal
+                return;
             }
             else
             {
-                // Apaga o item selecionado
                 char sql_delete[256];
-                snprintf(sql_delete, sizeof(sql_delete), "DELETE FROM estoque WHERE id = %d;", itens[selecionado].id);
+                snprintf(sql_delete, sizeof(sql_delete), "DELETE FROM produtos WHERE id = %d;", produtos[selecionado].id);
                 rc = sqlite3_exec(db, sql_delete, 0, 0, &err_msg);
 
                 if (rc != SQLITE_OK)
                 {
-                    mvprintw(linha_atual + num_itens + 2, coluna_inicio, "Erro ao deletar item: %s", err_msg);
+                    mvprintw(linha_atual + num_produtos + 2, coluna_inicio, "Erro ao apagar produto: %s", err_msg);
                     sqlite3_free(err_msg);
                 }
                 else
                 {
-                    mvprintw(linha_atual + num_itens + 2, coluna_inicio, "Item deletado com sucesso!");
-                    getch();
-                    visualizarEstoque();
-                    sqlite3_close(db);
-                    return;
+                    mvprintw(linha_atual + num_produtos + 2, coluna_inicio, "Produto apagado com sucesso!");
                 }
+
+                mvprintw(linha_atual + num_produtos + 4, coluna_inicio, "Pressione qualquer tecla para continuar...");
+                getch();
+                sqlite3_close(db);
+                return;
             }
-            break;
-        case 27:
-            sqlite3_close(db);
-            return;
         }
     }
+
+    sqlite3_close(db);
 }
 
 void exibirMenu(sqlite3 *db)
@@ -265,7 +256,7 @@ void exibirMenu(sqlite3 *db)
         int inicio_x = (COLS - largura_caixa) / 2;
         int inicio_y = (LINES - altura_caixa) / 2;
 
-        mvprintw(inicio_y - 2, (COLS - strlen("Menu de Estoque")) / 2, "Menu de Estoque");
+        mvprintw(inicio_y - 2, (COLS - strlen("Menu de Produtos")) / 2, "Menu de Produtos");
         mvprintw(inicio_y - 1, inicio_x + 2, "Use as setas para navegar");
 
         mvprintw(inicio_y, inicio_x, "+");
@@ -286,8 +277,8 @@ void exibirMenu(sqlite3 *db)
         }
 
         char *opcoes[] = {
-            "Adicionar ao estoque",
-            "Visualizar estoque",
+            "Adicionar Produto",
+            "Visualizar Produtos",
             "Sair"};
         int n_opcoes = sizeof(opcoes) / sizeof(char *);
 
@@ -319,10 +310,10 @@ void exibirMenu(sqlite3 *db)
             switch (opcao)
             {
             case 0:
-                adicionarEstoque(db);
+                adicionarProdutos(db);
                 break;
             case 1:
-                visualizarEstoque(db);
+                visualizarProdutos(db);
                 break;
             case 2:
                 endwin();

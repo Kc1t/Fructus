@@ -4,7 +4,7 @@
 
 void iniciarEstoque()
 {
-    system("./Admin/estoque");
+    system("./Admin/produtos");
 }
 
 void iniciarIntegrantes()
@@ -28,7 +28,7 @@ void mostrarMenu()
 {
     char *opcoes[] = {
         "Visualizar Vendas",
-        "Abrir Estoque",
+        "Visualizar Produtos",
         "Desenvolvedores",
         "Sair",
     };

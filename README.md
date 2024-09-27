@@ -1,7 +1,5 @@
 # Fructus-Software
 
-Code Structure
-
 ``` c
 .
 ├── README.md

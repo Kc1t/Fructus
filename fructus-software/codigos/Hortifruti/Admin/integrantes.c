@@ -37,12 +37,11 @@ void exibirMenu()
         }
 
         char *opcoes[] = {
-            "1. Guilherme",
-            "2. Gustavo Correa",
-            "3. João Paulo",
-            "4. Kaique Tabboni",
-            "5. Kauã Miguel",
-            "6. Wagner Fortes",
+            "1. Gustavo Correa",
+            "2. João Paulo",
+            "3. Kaique Tabboni",
+            "4. Kauã Miguel",
+            "5. Wagner Fortes",
             "Voltar"};
         int n_opcoes = sizeof(opcoes) / sizeof(char *);
 

@@ -48,7 +48,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href="https://github.com/Kc1t/desafio-verzel"
+            href="https://github.com/Kc1t/Fructus/"
             target="_blank"
             rel="noopener noreferrer"
             className="z-20 items-center justify-center bg-[#FB9333] hover:bg-[#FB9333]/80 transition-all ease-in-out duration-300 h-11 w-11 md:h-10 md:w-10 cursor-pointer rounded-full hidden md:flex"

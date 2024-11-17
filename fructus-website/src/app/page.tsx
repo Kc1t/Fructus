@@ -28,14 +28,14 @@ export default function Page() {
             no PIM II. Este site foi criado para baixar os arquivos e oferecer
             uma visão mais detalhada do projeto.
           </p>
-          <div className="my-2">
+          <a href="https://github.com/Kc1t/Fructus/" target="_blank" rel="noopener noreferrer" className="my-2">
             <Button className="bg-[#252525] text-sm md:text-base text-white hover:bg-[#252525]/80 rounded-full px-6 py-6 md:py-7">
               Baixar Repositório{" "}
               <div className="bg-white mx-2 rounded-full h-8 w-8 flex items-center justify-center">
                 <DownloadCloud className="text-black w-4" />
               </div>{" "}
             </Button>
-          </div>
+          </a>
         </div>
         <div></div>
       </div>

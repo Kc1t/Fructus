@@ -1,3 +1,5 @@
+"use client"
+
 // Components
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -6,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { DownloadCloud } from "lucide-react";
 
 export default function Page() {
+  const handleDownload = () => {
+    const filePath = "/fructus-software.zip";
+
+    const link = document.createElement("a");
+    link.href = filePath;
+    link.download = "fructus-software.zip";
+    link.click();
+  };
   return (
     <div className="bg-[#FDF1F5] w-full min-h-screen tv:h-auto overflow-x-hidden flex flex-col justify-between tv:justify-center items-center">
       <div className="h-[70vh] tv:h-[30vh] w-full overflow-hidden flex flex-col justify-between items-center">
@@ -17,7 +27,10 @@ export default function Page() {
             </span>
           </h1>
           <div className="my-2">
-            <Button className="bg-[#252525] text-sm md:text-base text-white hover:bg-[#252525]/80 rounded-full px-6 py-6 md:py-7">
+            <Button
+              onClick={handleDownload}
+              className="bg-[#252525] text-sm md:text-base text-white hover:bg-[#252525]/80 rounded-full px-6 py-6 md:py-7"
+            >
               Tentar Novamente
               <div className="bg-white mx-2 rounded-full h-8 w-8 flex items-center justify-center">
                 <DownloadCloud className="text-black w-4" />

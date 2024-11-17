@@ -22,6 +22,15 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const handleDownload = () => {
+    const filePath = "/fructus-software.zip";
+
+    const link = document.createElement("a");
+    link.href = filePath;
+    link.download = "fructus-software.zip";
+    link.click();
+  };
+
   return (
     <nav className="py-4 w-full z-[10]">
       <div className="flex items-center justify-between px-4 mx-auto w-[90%] lg:w-[70%] tv:max-w-6xl sm:px-6 lg:px-8">
@@ -57,7 +66,10 @@ export default function Navbar() {
           </a>
 
           <Link href="/download">
-            <Button className="hidden md:flex px-6 gap-2 rounded-full bg-[#FB9333] text-white hover:bg-[#FB9333]/80 font-medium">
+            <Button
+              onClick={handleDownload}
+              className="hidden md:flex px-6 gap-2 rounded-full bg-[#FB9333] text-white hover:bg-[#FB9333]/80 font-medium"
+            >
               <DownloadCloud className="w-5 text-white" />
               Baixar
             </Button>

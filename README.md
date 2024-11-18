@@ -55,6 +55,4 @@
 │       ├── compile.sh
 │       └── fructus.ico
 └── fructus-website
-
-16 directories, 37 files
 ```

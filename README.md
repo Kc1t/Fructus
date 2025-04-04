@@ -110,7 +110,3 @@ Este projeto foi desenvolvido para fins educacionais, mas melhorias são sempre 
 ## Licença
 
 Este projeto não possui uma licença específica. Uso livre para fins acadêmicos.
-
----
-**Repositório:** [GitHub - Fructus](https://github.com/Kc1t/Fructus)
-
